@@ -1,0 +1,17 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Hello, world!</title>
+<th:block th:include="fragments/header :: headerfiles"/>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header">Header</div>
+	
+	<h1 class="display-1">Welcome to Covid Tracking!</h1>
+
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Daily Covid Cases</title>
+<th:block th:include="fragments/header :: headerfiles"/>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<h1 class="display-1 text-center">Daily Covid Cases</h1>
+
+	<div class="card text-center container mb-2">
+		<div class="card-body">
+			<h5 class="card-title">Total Covid Cases:</h5>
+			<p th:text="${#numbers.formatDecimal(worldStat.totalCases,0,'COMMA',0,'POINT')}" 
+			   class="card-text display-3"/>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row justify-content-end">
+			<div class="col-4">
+				<input type="text" id="search" onkeyup="filterTable()"
+					class="form-control" placeholder="Search for location..">
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+
+		<table class="table table-hover" id="countriesTable">
+			<thead id="tableHeaders">
+				<tr>
+					<th scope="col">ISO Code</th>
+					<th scope="col">Continent</th>
+					<th scope="col">Location</th>
+					<th scope="col">Total Cases</th>
+					<th scope="col">Details</th>
+				</tr>
+			</thead>
+			<tbody id="tableBody">
+				<tr th:each="country : ${countries}">
+					<th th:text="${country.isoCode}"/>
+					<td th:text="${country.continent}"/>
+					<td th:text="${country.location}"/>
+					<td th:text="${#numbers.formatDecimal(country.totalCases,0,'COMMA',0,'POINT')}" class="text-end"/>
+					<td><a th:href="@{/country-details(isoCode=${country.isoCode})}">Details</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<script th:inline="javascript">
+		
+		/*<![CDATA[*/
+			var countries = /*[[${countries}]]*/ null;
+		/*]]>*/
+		
+		function filterTable() {
+			
+			var searchVal = document.getElementById("search").value;
+			
+			// console.log("search = " + search);
+			
+			/** Filter out the countries by the search string */
+			var filteredCountries = filterFunc(searchVal, countries);
+			
+			// console.log(filteredCountries);
+			
+			displayTable(filteredCountries);
+		}
+		
+		function filterFunc(searchVal, countries) {
+			
+			var filteredCountries = [];
+			
+			var lSearchVal = searchVal.toLowerCase();
+			
+			for (var i = 0; i < countries.length; i++) {
+				var cur = countries[i];
+				
+				var isoCode = cur.isoCode.toLowerCase();
+				var continent = cur.continent.toLowerCase();
+				var location = cur.location.toLowerCase();
+				
+				if (isoCode.includes(lSearchVal) 
+				    || continent.includes(lSearchVal)
+				    || location.includes(lSearchVal)) {
+					
+					filteredCountries.push(cur);
+				}
+			}
+			
+			return filteredCountries;
+		}
+	
+		function displayTable(countries) {
+			
+			// var tableHeaders = document.getElementById("tableHeaders");
+			var tableBody = document.getElementById("tableBody");
+			var newBody = document.createElement("tbody");
+			
+			for (const country of countries) {
+				var row = document.createElement("tr");
+				
+				for (const prop in country) {
+					// Stop at this property: newCases
+					if (prop === "newCases") {
+						break;
+					}
+					
+					var data = document.createElement("td");
+					
+					if (prop === "isoCode") {
+						var boldE = document.createElement("b");
+						var boldText = document.createTextNode(country[prop]);
+						boldE.appendChild(boldText);
+						data.appendChild(boldE);
+					}
+					else {
+						var p = country[prop]
+						
+						console.log("p = " + p);
+						console.log("typeof p = " + typeof(p));
+						
+						if (typeof(p) === 'number') {
+							console.log("p.toLocalString() = " + p.toLocaleString());
+							// Displays the numbers using commas and decimal points
+							data.innerHTML = p.toLocaleString();
+						}
+						else {
+							data.innerHTML = p;
+						}
+					}
+					
+					row.appendChild(data);
+				}
+				
+				// Add details link
+				var linkData = document.createElement("td");
+				var link = document.createElement('a');
+				var linkText = document.createTextNode("Details");
+				link.setAttribute("href", "/covid-cases/country-details?isoCode=" + country["isoCode"]);
+				link.appendChild(linkText);
+				
+				linkData.appendChild(link);
+				row.appendChild(linkData);
+
+				newBody.appendChild(row);
+			}
+			
+			// console.log(newBody);
+			
+			tableBody.innerHTML = "";
+			tableBody.innerHTML = newBody.innerHTML;
+			// console.log(tableBody);
+		}
+		
+	</script>
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>

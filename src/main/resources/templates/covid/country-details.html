@@ -1,0 +1,111 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Daily Covid Cases</title>
+<th:block th:include="fragments/header :: headerfiles"/>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<h1 class="display-3 text-center">Covid Data from <span th:text="${country.location}"></span></h1>
+
+	<div class="container">
+
+		<a th:href="@{/}" class="btn btn-dark btn-sm">Back to list</a>
+		
+		<table class="table table-hover"> 
+			<thead>
+				<tr>
+					<th scope="col">Details</th>
+					<th scope="col">#</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Population</th>
+					<td th:text="${#numbers.formatDecimal(country.population,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Cases</th>
+					<td th:text="${#numbers.formatDecimal(country.totalCases,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">New Cases</th>
+					<td th:text="${#numbers.formatDecimal(country.newCases,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Deaths</th>
+					<td th:text="${#numbers.formatDecimal(country.totalDeaths,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">New Deaths</th>
+					<td th:text="${#numbers.formatDecimal(country.newDeaths,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<!--  -->
+				<tr>
+					<th scope="row">Total Cases Per Million</th>
+					<td th:text="${#numbers.formatDecimal(country.totalCasesPerMillion,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">New Cases Per Million</th>
+					<td th:text="${#numbers.formatDecimal(country.newCasesPerMillion,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Deaths Per Million</th>
+					<td th:text="${#numbers.formatDecimal(country.newDeathsPerMillion,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">New Deaths Per Million</th>
+					<td th:text="${#numbers.formatDecimal(country.newDeathsPerMillion,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Reproduction Rate</th>
+					<td th:text="${#numbers.formatDecimal(country.reproductionRate,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Vaccinations</th>
+					<td th:text="${#numbers.formatDecimal(country.totalVaccinations,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">People Vaccinated</th>
+					<td th:text="${#numbers.formatDecimal(country.peopleVaccinated,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">People Fully Vaccinated</th>
+					<td th:text="${#numbers.formatDecimal(country.peopleFullyVaccinated,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Boosters</th>
+					<td th:text="${#numbers.formatDecimal(country.totalBoosters,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">New Vaccinations</th>
+					<td th:text="${#numbers.formatDecimal(country.newVaccinations,0,'COMMA',0,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Vaccinations Per Hundred</th>
+					<td th:text="${#numbers.formatDecimal(country.totalVaccinationsPerHundred,0,'COMMA',3,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">People Vaccinated Per Hundred</th>
+					<td th:text="${#numbers.formatDecimal(country.peopleVaccinatedPerHundred,0,'COMMA',3,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">People Fully Vaccinated Per Hundred</th>
+					<td th:text="${#numbers.formatDecimal(country.peopleFullyVaccinatedPerHundred,0,'COMMA',3,'POINT')}"/>
+				</tr>
+				<tr>
+					<th scope="row">Total Boosters Per Hundred</th>
+					<td th:text="${#numbers.formatDecimal(country.totalBoostersPerHundred,0,'COMMA',3,'POINT')}"/>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>
